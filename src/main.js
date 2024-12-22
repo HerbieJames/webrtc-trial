@@ -12,12 +12,10 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-const firestore = firebase.firestore();
-
 const servers = {
   iceServers: [
     {
-      urls: ["stun.root-1.de:3478", "stun.1cbit.ru:3478"]
+      urls: ["stun:stun.l.google.com:19302", "stun:stun2.l.google.com:19302"]
     },
   ],
   iceCandidatePoolSize: 10
@@ -27,10 +25,32 @@ let pc = new RTCPeerConnection(servers);
 let localStream = null;
 let remoteStream = null;
 
+const callInput = document.getElementById("callInput");
+const callButton = document.getElementById("callBtn");
 const webcamVideo = document.getElementById("localFootage");
 const remoteVideo = document.getElementById("remoteFootage");
-const callButton = document.getElementById("callBtn");
-const callInput = document.getElementById("callInput");
 const webcamButton = document.getElementById("webcamBtn");
 const hangupButton = document.getElementById("hangUpBtn");
 const answerButton = document.getElementById("answerBtn");
+
+// 1. Setup media sources
+
+webcamButton.onclick = async () => {
+  localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true});
+  remoteStream = new MediaStream();
+
+  // Push tracks from local stream to peer connection
+  localStream.getTracks().forEach((track) => {
+    pc.addTrack(track, localStream);
+  });
+
+  // Push tracks from remote stream, add to video stream
+  pc.ontrack = event => {
+    event.streams[0].getTracks().forEach((track) => {
+      remoteStream.addTrack(track);
+    });
+  }
+
+  webcamVideo.srcObject = localStream;
+  remoteVideo.srcObject = remoteStream;
+}
