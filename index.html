@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebRTC Trial - Video</title>
+  </head>
+  <body>
+    <h1>Video Conferencing App</h1>
+    <div class="row">
+      <div class="column">
+        <h3>Local Host</h3>
+        <video id = "localFootage" autoplay playsinline></video>
+      </div>
+      <div class="column">
+        <h3>Remote Peer</h3>
+        <video id = "remoteFootage" autoplay playsinline></video>
+      </div>
+    </div>
+    <div class="rowM">
+      <button id="hangUpBtn" class="disabled">Hang-Up</button>
+      <button id="answerBtn" class="disabled">Answer</button>
+    </div>
+    <div class="row">
+      <button id="webcamBtn">Launch Webcam</button>
+      <label for="callInput">Code:
+        <input id = "callInput" type="text">
+      </label>
+      <button id="callBtn">Make Call</button>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
